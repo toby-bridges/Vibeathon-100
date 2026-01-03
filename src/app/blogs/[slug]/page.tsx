@@ -43,8 +43,10 @@ export default async function BlogPage({ params }: Props) {
         {content}
       </div>
 
-      {/* 为每个作业添加投票按钮 */}
-      <VoteButton workId={params.slug} workTitle={blog.title} />
+      {/* 只有启用投票的作业才显示投票按钮 */}
+      {blog.enableVoting !== false && (
+        <VoteButton workId={params.slug} workTitle={blog.title} />
+      )}
     </BlogLayout>
   )
 }
