@@ -14,7 +14,7 @@ import SocialLinks from '@/components/about/SocialLinks'
 export const metadata: Metadata = {
   title: 'About',
   description:
-    'Hi, I am Corey Chiu, a software engineer based in Shenzhen, China.',
+    '我是李韭二，正在进行100天的 Vibe Coding 挑战。',
 }
 
 export default function About() {

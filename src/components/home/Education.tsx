@@ -15,20 +15,26 @@ function EducationItem({ educationItem }: { educationItem: EducationItemType }) 
         <CustomIcon name={educationItem.logo} />
       </div>
       <dl className="flex flex-auto flex-wrap gap-x-2">
-        <dt className="sr-only">Company</dt>
+        <dt className="sr-only">School</dt>
         <dd className="w-full flex-none text-sm font-medium">
           {educationItem.school}
         </dd>
-        <dt className="sr-only">Title</dt>
-        <dd className="text-xs text-muted-foreground">
-          {educationItem.major}
-        </dd>
+        {educationItem.major && (
+          <>
+            <dt className="sr-only">Major</dt>
+            <dd className="text-xs text-muted-foreground">
+              {educationItem.major}
+            </dd>
+          </>
+        )}
         <dt className="sr-only">Date</dt>
         <dd
           className="ml-auto text-xs text-muted-foreground"
           aria-label={`${educationItem.start} until ${educationItem.end}`}
         >
-          {educationItem.start} - {educationItem.end}
+          <span className="inline-block min-w-[80px] text-right">
+            {educationItem.start} - {educationItem.end}
+          </span>
         </dd>
       </dl>
     </li>
