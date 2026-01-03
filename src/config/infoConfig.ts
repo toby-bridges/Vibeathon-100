@@ -7,24 +7,24 @@ export * from './activity'
 
 
 // personal info
-export const name = 'Corey Chiu'
-export const headline = 'Software engineer, Full-Stack web developer, and indie hacker.'
-export const introduction = 'I’m Corey, a software engineer based in Shenzhen, China. I like coding, and building interesting things'
-export const email = 'xxx@gmail.com'
-export const githubUsername = 'iamcorey'
+export const name = '李韭二'
+export const headline = '邀请你见证一个韭二代的自救和重生之路'
+export const introduction = '我是李韭二，正在进行100天的 Vibe Coding 挑战，每天一个作业，记录我的成长之路'
+export const email = 'contact@example.com'
+export const githubUsername = 'toby-bridges'
 
 // about page
-export const aboutMeHeadline = "I'm Corey Chiu, a software engineer based in Shenzhen, China."
+export const aboutMeHeadline = "我是李韭二，一个韭二代的自救和重生之路"
 export const aboutParagraphs = [
-  "I love coding. I learned programming when I in college. I wrote my first program in Java when I was 18.",
-  "I have a lot of hobbies, such as travelling, photography, watching movies, music and so on.",
-  "I'm working as a software develop engineer in Shenzhen, China now. And I'm building a lot of side projects in my spare time."
+  "我正在进行100天 Vibe Coding 挑战，每天完成一个编程作业，记录我的成长历程。",
+  "从零开始，一步一个脚印，用代码改变自己的命运。",
+  "欢迎见证我的蜕变之旅，也欢迎为我的作业投票和反馈！"
 ]
 
 
 // blog
-export const blogHeadLine = "What I've thinking about."
-export const blogIntro = "I've written something about AI, programming and life."
+export const blogHeadLine = "100天 Vibe Coding 挑战"
+export const blogIntro = "记录我的每一个作业，见证成长的每一步。每个作业都可以投票！"
 
 
 // social links
@@ -40,44 +40,21 @@ export const socialLinks: Array<SocialLinkType> = [
   {
     name: 'X',
     icon: 'x',
-    href: 'https://x.com/realcoreychiu',
-    external: true
-  },
-  {
-    name: 'Bsky',
-    icon: 'bsky',
-    href: 'https://bsky.app/profile/coreychiu.com',
-    external: true
-  },
-  {
-    name: 'Jike',
-    icon: 'pill',
-    href: 'https://okjk.co/P7c1zU',
+    href: 'https://x.com/lijiuer92',
     external: true
   },
   {
     name: 'Github',
     icon: 'github',
-    href: 'https://github.com/iamcorey',
+    href: 'https://github.com/toby-bridges',
     external: true
   },
   {
     name: 'Wechat',
     icon: 'wechat',
-    href: 'https://mp.weixin.qq.com/s/DxnRgqNfgzXIhqj6w_x0dQ',
-    external: true
-  },
-  {
-    name: 'Discord',
-    icon: 'discord',
-    href: 'https://discord.gg/xTxRg3Ej',
-    external: true
-  },
-  {
-    name: 'Ko-fi',
-    icon: 'coffee',
-    href: 'https://ko-fi.com/coreychiu',
-    external: true
+    href: '/wechat-qr',
+    ariaLabel: '微信公众号：李韭二',
+    external: false
   }
 ]
 

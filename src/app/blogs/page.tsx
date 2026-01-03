@@ -5,6 +5,7 @@ import { SimpleLayout } from '@/components/layout/SimpleLayout'
 import { type BlogType, getAllBlogs } from '@/lib/blogs'
 import { formatDate } from '@/lib/formatDate'
 import { blogHeadLine, blogIntro } from '@/config/infoConfig'
+import { ChallengeProgress } from '@/components/ChallengeProgress'
 
 export const runtime = process.env.NEXT_RUNTIME === 'edge' ? 'edge' : 'nodejs'
 
@@ -46,11 +47,20 @@ export const metadata: Metadata = {
 export default async function BlogsIndex() {
   let blogs = await getAllBlogs()
 
+  // 计算完成的作业数（不包括占位作业）
+  const completedWorks = blogs.filter(blog =>
+    !blog.title.includes('敬请期待') &&
+    !blog.title.includes('占位') &&
+    blog.title.startsWith('Day')
+  ).length
+
   return (
     <SimpleLayout
       title={blogHeadLine}
       intro={blogIntro}
     >
+      <ChallengeProgress completed={completedWorks} total={100} />
+
       <div className="md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40">
         <div className="flex max-w-3xl flex-col space-y-16">
           {blogs.map((blog: BlogType) => (

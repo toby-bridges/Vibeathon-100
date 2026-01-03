@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { getBlogBySlug } from '@/lib/blogs'
 import { getMDXContent } from '@/lib/mdx'
 import { BlogLayout } from '@/components/layout/BlogLayout'
+import { VoteButton } from '@/components/VoteButton'
 
 export const runtime = process.env.NEXT_RUNTIME === 'edge' ? 'edge' : 'nodejs'
 
@@ -29,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPage({ params }: Props) {
   const blog = await getBlogBySlug(params.slug)
-  
+
   if (!blog) {
     notFound()
   }
@@ -41,6 +42,9 @@ export default async function BlogPage({ params }: Props) {
       <div className="mt-8 prose dark:prose-invert max-w-none">
         {content}
       </div>
+
+      {/* 为每个作业添加投票按钮 */}
+      <VoteButton workId={params.slug} workTitle={blog.title} />
     </BlogLayout>
   )
 }
