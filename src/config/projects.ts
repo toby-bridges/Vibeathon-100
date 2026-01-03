@@ -1,6 +1,6 @@
 // projects
-export const projectHeadLine = "What I've done and what I'm doing."
-export const projectIntro = "I've worked on a variety of projects, from simple websites to complex web applications. And many of them are open-source. Here are a few of my favorites."
+export const projectHeadLine = "我的100天挑战作业"
+export const projectIntro = "每天一个作业，记录我的成长历程。从Day 001到Day 100，见证蜕变之旅。"
 
 export type ProjectItemType = {
     name: string
@@ -16,38 +16,34 @@ export type ProjectItemType = {
     gitForks?: number
   }
   
-  // projects 
+  // projects
   export const projects: Array<ProjectItemType> = [
     {
-      name: '轻息',
-      description:
-        '一款呼吸训练、缓解压力、提升专注力的“小而美”app',
-      link: { href: 'apps.apple.com/us/app/%E8%BD%BB%E6%81%AF/id6742171445', label: '轻息' },
-      category: ['App'],
-      techStack: ['SwiftUI'],
-      tags: ['App', 'iOS'],
-      logo: '/images/icon/breathe-app-icon.png',
+      name: 'Day 001 - 圣诞礼物',
+      description: '给女朋友制作的圣诞节特别礼物，用代码表达爱意',
+      link: { href: 'https://love-zeta-snowy.vercel.app/', label: '在线演示' },
+      category: ['Web App'],
+      techStack: ['Next.js', 'React', 'TailwindCSS'],
+      tags: ['Love', 'Gift']
     },
     {
-      name: 'SEO Explore',
-      description:
-        'Explore all the best SEO tools in one place.',
-      link: { href: 'seoexplore.com', label: 'SEO Explore' },
-      category: ['Website'],
-      techStack: ['Next.js', 'TailwindCSS', 'Shadcn/UI'],
-      tags: ['SEO']
+      name: 'Day 002 - 岳母股票预言机',
+      description: '一个有趣的股票预测小工具，帮助岳母大人做投资决策',
+      link: { href: 'https://yue-mu-stock.vercel.app/', label: '在线演示' },
+      category: ['Web App'],
+      techStack: ['Next.js', 'React', 'Data Visualization'],
+      tags: ['Stock', 'Prediction']
     },
     {
-      name: 'GitHub Cards',
-      description:
-        'Showcase your GitHub contributions into stunning visual cards.',
-      link: { href: 'github.cards', label: 'GitHub Cards' },
-      category: ['Website'],
-      techStack: ['Next.js', 'TailwindCSS', 'Shadcn/UI'],
-      tags: ['Visual Cards', 'GitHub Contribution Cards']
+      name: 'Day 003 - 敬请期待',
+      description: '第3天的作业正在创作中，敬请期待！',
+      link: { href: '/blogs', label: '查看所有作业' },
+      category: ['Coming Soon'],
+      techStack: ['TBD'],
+      tags: ['WIP']
     },
     {
-      name: 'AI Best Tools',
+      name: '更多作业',
       description:
         'Find the best AI tools in AIBest.tools',
       link: { href: 'aibest.tools', label: 'AI Best Tools' },

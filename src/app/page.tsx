@@ -65,7 +65,8 @@ export default async function Home() {
             ))}
           </ul>
         </div>
-        <div className="mx-auto flex flex-col max-w-xl gap-6 lg:max-w-none my-4 py-8 border-t border-muted">
+        {/* GitHub 开源项目模块已隐藏 */}
+        {/* <div className="mx-auto flex flex-col max-w-xl gap-6 lg:max-w-none my-4 py-8 border-t border-muted">
           <h2 className="flex flex-row items-center justify-start gap-2 text-xl font-semibold tracking-tight md:text-3xl opacity-80 mb-4">
             <CustomIcon name='github' size={28}/>
             Open Source
@@ -78,7 +79,7 @@ export default async function Home() {
               <GithubProjectCard key={project.name} project={project} titleAs='h3'/>
             ))}
           </ul>
-        </div>
+        </div> */}
         <div className="mx-auto flex flex-col max-w-xl gap-6 py-8 my-8 lg:max-w-none border-t border-muted">
           <h2 className="text-3xl font-semibold tracking-tight md:text-5xl opacity-80">
             {blogHeadLine}
@@ -101,7 +102,7 @@ export default async function Home() {
 
           {/* right column */}
           <div className="space-y-10 lg:pl-16 xl:pl-24">
-            <Career />
+            {/* <Career /> - 职业经历已隐藏 */}
             <Education />
 
             {/* <Newsletter /> */}
