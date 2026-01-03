@@ -65,21 +65,16 @@ export default async function Home() {
             ))}
           </ul>
         </div>
-        {/* GitHub 开源项目模块已隐藏 */}
-        {/* <div className="mx-auto flex flex-col max-w-xl gap-6 lg:max-w-none my-4 py-8 border-t border-muted">
-          <h2 className="flex flex-row items-center justify-start gap-2 text-xl font-semibold tracking-tight md:text-3xl opacity-80 mb-4">
-            <CustomIcon name='github' size={28}/>
-            Open Source
-          </h2>
-          <ul
-            role="list"
-            className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 md:grid-cols-3"
-          >
-            {githubProjects.map((project) => (
-              <GithubProjectCard key={project.name} project={project} titleAs='h3'/>
-            ))}
-          </ul>
-        </div> */}
+        {/* 用图片替换 OpenSource 区块 */}
+        <div className="mx-auto flex flex-col max-w-xl gap-6 lg:max-w-none my-4 py-8 border-t border-muted">
+          <div className="relative w-full rounded-2xl overflow-hidden shadow-lg">
+            <img
+              src="/coding.jfif"
+              alt="Coding showcase"
+              className="w-full h-auto object-cover"
+            />
+          </div>
+        </div>
         <div className="mx-auto flex flex-col max-w-xl gap-6 py-8 my-8 lg:max-w-none border-t border-muted">
           <h2 className="text-3xl font-semibold tracking-tight md:text-5xl opacity-80">
             {blogHeadLine}

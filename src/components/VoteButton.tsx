@@ -8,10 +8,10 @@ interface VoteButtonProps {
 }
 
 export function VoteButton({ workId, workTitle }: VoteButtonProps) {
-  const tallyFormId = process.env.NEXT_PUBLIC_TALLY_FORM_ID || 'YOUR_TALLY_FORM_ID'
+  const tallyFormId = process.env.NEXT_PUBLIC_TALLY_FORM_ID || '44JkJ5'
 
   // 构建Tally表单URL，自动填充workId
-  const tallyUrl = `https://tally.so/${tallyFormId}?workId=${encodeURIComponent(workId)}&workTitle=${encodeURIComponent(workTitle)}`
+  const tallyUrl = `https://tally.so/r/${tallyFormId}?workId=${encodeURIComponent(workId)}&workTitle=${encodeURIComponent(workTitle)}`
 
   return (
     <div className="mt-8 flex flex-col items-center gap-4 rounded-lg border border-teal-200 bg-gradient-to-br from-teal-50 to-cyan-50 p-6 dark:border-teal-800 dark:from-teal-950/30 dark:to-cyan-950/30">

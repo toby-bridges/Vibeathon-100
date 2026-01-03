@@ -9,7 +9,17 @@ import Link from 'next/link'
 import { Favicon } from "favicon-stealer";
 
 export function ProjectCard({ project, titleAs }: { project: ProjectItemType, titleAs?: keyof JSX.IntrinsicElements }) {
-  const utmLink = `https://${project.link.href}?utm_source=${utm_source}`
+  // 修复链接格式：如果已经有 https://，不要再加
+  const href = project.link.href.startsWith('http')
+    ? project.link.href
+    : project.link.href.startsWith('/')
+      ? project.link.href
+      : `https://${project.link.href}`
+
+  const utmLink = href.startsWith('http') && utm_source
+    ? `${href}${href.includes('?') ? '&' : '?'}utm_source=${utm_source}`
+    : href
+
   let Component = titleAs ?? 'h2'
   return (
     <li className='group relative flex flex-col items-start h-full'>

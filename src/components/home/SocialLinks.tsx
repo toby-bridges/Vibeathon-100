@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils'
 
 export default function SocialLinks({ className }: { className?: string }) {
     return (
-        <div className={cn("mt-6 flex items-center", className)}>
+        <div className={cn("mt-6 flex items-center gap-2", className)}>
             {socialLinks.map((link) => (
                 <Link
                     key={link.name}
@@ -16,9 +16,9 @@ export default function SocialLinks({ className }: { className?: string }) {
                     target={link.external ? "_blank" : "_self"}
                     rel="noreferrer"
                     aria-label={link.ariaLabel ?? `Follow on ${link.name}`}
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground"
+                    className="inline-flex h-12 w-12 items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground"
                 >
-                    <CustomIcon name={link.icon} />
+                    <CustomIcon name={link.icon} size={28} />
                     <span className="sr-only">{link.name}</span>
                 </Link>
             ))}
@@ -27,9 +27,9 @@ export default function SocialLinks({ className }: { className?: string }) {
                 target="_blank"
                 rel="noreferrer"
                 aria-label='Email'
-                className="inline-flex h-10 w-10 items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground"
+                className="inline-flex h-12 w-12 items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground"
             >
-                <CustomIcon name='email' />
+                <CustomIcon name='email' size={28} />
                 <span className="sr-only">Email</span>
             </Link>
         </div>

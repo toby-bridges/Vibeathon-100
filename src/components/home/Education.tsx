@@ -16,7 +16,7 @@ function EducationItem({ educationItem }: { educationItem: EducationItemType }) 
       </div>
       <dl className="flex flex-auto flex-wrap gap-x-2">
         <dt className="sr-only">School</dt>
-        <dd className="w-full flex-none text-sm font-medium">
+        <dd className="flex-1 text-sm font-medium pr-2">
           {educationItem.school}
         </dd>
         {educationItem.major && (
@@ -29,12 +29,10 @@ function EducationItem({ educationItem }: { educationItem: EducationItemType }) 
         )}
         <dt className="sr-only">Date</dt>
         <dd
-          className="ml-auto text-xs text-muted-foreground"
+          className="flex-none text-xs text-muted-foreground whitespace-nowrap"
           aria-label={`${educationItem.start} until ${educationItem.end}`}
         >
-          <span className="inline-block min-w-[80px] text-right">
-            {educationItem.start} - {educationItem.end}
-          </span>
+          {educationItem.start} - {educationItem.end}
         </dd>
       </dl>
     </li>
