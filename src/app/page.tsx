@@ -38,10 +38,10 @@ export default async function Home() {
             <p className="text-lg text-muted-foreground/70 italic mb-6">
               {headlineEn}
             </p>
-            <p className="mt-6 text-base text-zinc-700 dark:text-zinc-300">
+            <p className="mt-6 text-base text-zinc-700 dark:text-zinc-300 leading-relaxed">
               {introduction}
             </p>
-            <p className="mt-3 text-base text-muted-foreground">
+            <p className="mt-6 text-base text-muted-foreground leading-relaxed">
               {introductionEn}
             </p>
             <SocialLinks className='md:mt-24'/>
