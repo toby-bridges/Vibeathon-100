@@ -9,6 +9,7 @@ export type BlogType = {
   author: string
   date: string
   slug: string
+  enableVoting?: boolean
 }
 
 async function importBlog(
