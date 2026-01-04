@@ -5,7 +5,7 @@ import Feed from '@/components/home/Feed'
 import Career from '@/components/home/Career'
 import Education from '@/components/home/Education'
 import SocialLinks from '@/components/home/SocialLinks'
-import { headline, introduction } from '@/config/infoConfig'
+import { headline, headlineEn, introduction, introductionEn, blogIntro, blogIntroEn } from '@/config/infoConfig'
 import { BlogCard } from '@/components/home/BlogCard'
 import { getAllBlogs, type BlogType } from '@/lib/blogs'
 import { ProjectCard } from '@/components/project/ProjectCard'
@@ -32,11 +32,17 @@ export default async function Home() {
         {/* personal info */}
         <div className="mb-10 grid grid-cols-1 md:grid-cols-2">
           <div className='md:mt-20'>
-            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl opacity-80">
+            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl opacity-80 mb-2">
               {headline}
             </h2>
-            <p className="mt-6 text-base text-muted-foreground">
+            <p className="text-lg text-muted-foreground/70 italic mb-6">
+              {headlineEn}
+            </p>
+            <p className="mt-6 text-base text-zinc-700 dark:text-zinc-300">
               {introduction}
+            </p>
+            <p className="mt-3 text-base text-muted-foreground">
+              {introductionEn}
             </p>
             <SocialLinks className='md:mt-24'/>
           </div>
@@ -79,8 +85,11 @@ export default async function Home() {
           <h2 className="text-3xl font-semibold tracking-tight md:text-5xl opacity-80">
             {blogHeadLine}
           </h2>
-          <p className="text-base text-muted-foreground max-w-2xl mb-8">
+          <p className="text-base text-zinc-700 dark:text-zinc-300 max-w-2xl mb-2">
             {blogIntro}
+          </p>
+          <p className="text-base text-muted-foreground max-w-2xl mb-8">
+            {blogIntroEn}
           </p>
         </div>
         <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2 pb-4">

@@ -2,7 +2,7 @@ import { type Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
-import { aboutMeHeadline, aboutParagraphs } from '@/config/infoConfig'
+import { aboutMeHeadline, aboutMeHeadlineEn, aboutParagraphs } from '@/config/infoConfig'
 import { Container } from '@/components/layout/Container'
 
 import portraitImage from '@/images/portrait.jpg'
@@ -32,12 +32,15 @@ export default function About() {
           </div>
         </div>
         <div className="lg:order-first lg:row-span-2">
-          <h1 className="text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100">
+          <h1 className="text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100 mb-3">
             {aboutMeHeadline}
           </h1>
-          <div className="mt-6 space-y-7 text-base text-zinc-600 dark:text-zinc-400">
+          <p className="text-2xl text-muted-foreground/70 italic mb-6">
+            {aboutMeHeadlineEn}
+          </p>
+          <div className="mt-6 space-y-4 text-base text-zinc-600 dark:text-zinc-400">
             {aboutParagraphs.map((paragraph, index) => (
-              <p key={index}>
+              <p key={index} className={index % 2 === 0 ? "text-zinc-700 dark:text-zinc-300" : "text-muted-foreground"}>
                 {paragraph}
               </p>
             ))}
