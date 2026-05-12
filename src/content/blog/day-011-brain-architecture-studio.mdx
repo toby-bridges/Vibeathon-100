@@ -1,0 +1,95 @@
+---
+title: 'Day 11 - Brain Architecture Studio'
+description: '现代 3D 大脑解剖工作台：BodyParts3D 真实 mesh + 4 套成像模式材质 + 真切面 + 双视图比较的开源底座'
+author: '李韭二'
+date: '2026-05-11'
+---
+
+![Brain Architecture Studio demo](/projects/brain-architecture-studio.gif)
+
+> [**Live demo →**](https://toby-bridges.github.io/brain-architecture-studio/) · [GitHub repo](https://github.com/toby-bridges/brain-architecture-studio) · [v0.1.0 release](https://github.com/toby-bridges/brain-architecture-studio/releases/tag/v0.1.0)
+
+## 起因
+
+给两个开源项目当起手：[huangserva/3DCellForge](https://github.com/huangserva/3DCellForge) 和 [cclank/cell-architecture-studio](https://github.com/cclank/cell-architecture-studio)，两家做的都是**细胞结构 3D 可视化**。我让 Claude 把这两个项目克隆到本地，然后开始讨论"前端怎么用 Claude design 复刻"。
+
+中途我说了一句决定全局的话：「**我是需要做成大脑版的而不是细胞版的**」。这一句让整个项目从"复刻"变成了「**借两家的设计语言 + 工程基底 + 把内容主题搬到神经科学**」。
+
+最终的形态是一个项目，取两家之长：
+- **架构基底**：cell-architecture-studio 的 TS + 模块化 + Playwright 验证流水线
+- **视觉**：「19 世纪解剖图谱」美学（米色纸面 + 衬线标题 + 手写体副标题）
+- **交互**：3DCellForge 的控件语义（视图模式切换、自动旋转、Cross Section 切片）
+
+## 三个版本的演化
+
+**V1 (废弃)** — 纯 procedural geometry：用 sin/cos 噪声位移做半球，phi/theta 切片做脑叶 patch。视觉上限「卡通示意图」。
+
+**V2 (废弃)** — NIH 3DPX-021161 单 mesh GLB，13MB CC-BY。解剖准确度高，但**单一 mesh 没法按子结构高亮**（你点 Hippocampus，整个脑都变色）。
+
+**V3 (当前)** — **BodyParts3D 49 个 FJ 编号 GLB**，3.9MB 总。每个独立 mesh，FMA→FJ 映射通过 `isa_element_parts.txt` + `partof_element_parts.txt` 双表交叉验证。覆盖 7 个脑区 × 28 个子结构（17 个有真实 mesh，11 个是功能性/细胞构筑分区 BodyParts3D 不发，label-only 处理）。
+
+## 4 个关键技术决策
+
+### 1. tintMaterial PRESETS 是 imaging 模式的核心
+
+`src/components/brain/materials.ts` 里有 `PRESETS: Record<ImagingMode, StylePreset>`：
+
+- **T1 MRI** (anatomical) — 暖奶油基线，accent color tint
+- **fMRI BOLD** (activation) — `highlightEmissive: "#ff5121"` 燃烧橙红 + `intensityScale: 1.6` 让 Bloom 强烈光晕
+- **DTI Tractography** (tracts) — `highlightEmissive: "#3eb7e8"` 青蓝 + `metalness: 0.22` 模拟纤维丝绒
+- **Histology** (Nissl/Myelin/Purkinje/Golgi) — `intensityScale: 0.35` 故意压到 Bloom 阈值 0.78 以下，棕褐 matte 标本感
+
+**诚实声明**：这是**视觉风格化模拟**，不是真 T1/fMRI/DTI 体素数据。Roadmap 里 niivue branch 是真数据路线（已经调研，CDN 链接全部验证）。
+
+### 2. occluding shell 让深层结构透出来
+
+当用户选 hippocampus / amygdala / thalamus / midbrain / pons / medulla 这些深层结构时，所有外层 cortex mesh 自动变 `opacity: 0.22` + `depthWrite: false`。让你看到原本被脑壳挡住的内部结构。
+
+### 3. SHARED_CLIP_PLANE 单实例 mutate
+
+Cross Section 三向切面（axial / coronal / sagittal + slider）。关键 trick：`materials.ts` 顶层有 `SHARED_CLIP_PLANE = new Plane(...)`，slider 拖动只 mutate `plane.normal` 和 `plane.constant`，**不触发任何 React re-render**，也不重新 clone 49 个 mesh 的 material（否则每帧重 clone 拖动会卡）。Three.js 每帧自动读 plane 状态。
+
+### 4. drei `<View>` HtmlView 模式（绕 v10 bug）
+
+Comparison Modal 双脑并排用 drei `<View>`。结果发现 drei v10 `View.js:19` 的 `isOffscreen` 检查 `trackRect.left > canvasSize.width` —— **当 canvas 不在 viewport 左边时这个检查误判右侧 view 为 offscreen**，整个右脑不渲染。
+
+**修法**：用 HtmlView 模式（`<View>` 在 Canvas 外、`<View.Port />` 在 Canvas 内）+ Canvas `position: fixed; inset: 0` 撑满 viewport 让 `canvasSize.width` 大到不触发误判。每个 `<View>` 加独立 `<PerspectiveCamera makeDefault>`，BrainSceneInner 的 `compact` 模式跳过 OrbitControls 和 EffectComposer。
+
+## 工程规范（合作中沉淀的硬规则）
+
+合作过程中我栽过 2 次跟头：
+1. **过度声明**："imaging modes 是独创隐喻" — 用户问代码在哪我说不上来
+2. **视觉回归没监控** — 改 camera 时没对比新旧 brainstem 框得好不好
+
+之后我们立了 5 条规范：
+1. **不见证据不算完成** — 任何「X 实现了」必须配截图 + 文件:行号引用
+2. **`FEATURES.md` + `KNOWN_ISSUES.md` 是 single source of truth**
+3. **大改后必跑 inventory subagent** — 实测：subagent 一次跑出 3 个我自测没找到的 bug
+4. **爆炸半径单 PR 单 fix** — 每个 bug 独立 commit + verify
+5. **`scripts/scratch/` 隔离一次性探针**
+
+## 与 brainfacts.org 3D Brain 的差异化
+
+| | brainfacts.org | Brain Architecture Studio |
+|---|---|---|
+| 解剖 | Stylized 单 mesh，无来源标注 | 49 BodyParts3D 真 mesh，FMA-tagged，CC-BY-SA |
+| 子结构高亮 | 30 个扁平结构 | 7 region × 28 substructure |
+| 切面 | — | axial / coronal / sagittal + slider，真 clipping plane |
+| 成像模式 | — | 4 套视觉 preset (风格化) |
+| 双视图对比 | — | 1 Canvas + 2 drei View |
+| 导出 | 仅截图 | PNG + GLB |
+| 技术栈 | 2017 jQuery + Three.js r80s | 2026 React 19 + R3F + Three.js 0.181 |
+| 内容深度 | SfN 编辑团队精校 | Wikipedia-level 占位，欢迎 PR |
+
+**定位**：他们是「大众博物馆」，我们是「**现代解剖工作台**」。受众是开发者 / 神经科学学生 / 教育者。
+
+## 链接
+
+- **Live demo**: https://toby-bridges.github.io/brain-architecture-studio/
+- **GitHub repo**: https://github.com/toby-bridges/brain-architecture-studio
+- **v0.1.0 release** (含 killer demo MP4/GIF): https://github.com/toby-bridges/brain-architecture-studio/releases/tag/v0.1.0
+- **工程笔记 FOR_JOHN.md**: https://github.com/toby-bridges/brain-architecture-studio/blob/main/FOR_JOHN.md
+
+## 数据归属
+
+3D 解剖 mesh 来自 **BodyParts3D 4.0**，© DBCLS，CC-BY-SA 2.1 Japan 许可。49 个 GLB 是从官方 OBJ 数据集通过 `obj2gltf` 转换得到的衍生作品，继承 CC-BY-SA。应用代码 MIT 许可。

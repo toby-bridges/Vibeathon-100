@@ -1,0 +1,102 @@
+---
+title: 'Day 12 - API Relay Audit'
+description: '第三方 AI API 中转 / 反代安全审计工具：13 步本地审计，检测 prompt 注入 / 泄漏 / 指令覆盖 / 上下文截断，含 Web3 钱包场景'
+author: '李韭二'
+date: '2026-05-12'
+---
+
+> [**Live site →**](https://toby-bridges.github.io/api-relay-audit/) · [GitHub repo](https://github.com/toby-bridges/api-relay-audit)
+
+## 起因
+
+中转站 / 反代 / relay 已经成了独立开发者用 AI API 的标准选项 — 比官方便宜、能绕过区域封锁、能聚合多家。但你**真的知道你打过去的 prompt 和返回的内容，在中转链路里被改了什么吗？**
+
+常见但被忽略的风险：
+- 中转站偷偷在你的 prompt 前面塞 hidden system message
+- response 被截断或重写以省 token
+- 工具调用被替换 / 注释
+- SSE 流被插入伪造内容
+- Web3 / 钱包场景下被引导泄漏私钥或签虚假交易
+
+这就是 `api-relay-audit` 要解决的问题。
+
+## 一句话讲清楚它干什么
+
+**一个本地运行的 13 步审计工具，输入你的 API key + base URL，输出一份结构化 Markdown 报告 + LOW / MEDIUM / HIGH 总结论 + 每项细节。**
+
+## 30 秒上手
+
+```bash
+curl -sO https://raw.githubusercontent.com/toby-bridges/api-relay-audit/master/audit.py
+
+python audit.py --key <YOUR_KEY> --url <BASE_URL> --output report.md
+
+# Web3 / 钱包用户多一个 profile
+python audit.py --key <YOUR_KEY> --url <BASE_URL> --profile web3 --output report.md
+```
+
+零依赖 — 一个单文件 `audit.py` 就能跑。`python audit.py` 不需要 `pip install` 任何东西。
+
+## 覆盖的 13 类检查
+
+### Prompt 安全
+- **token injection** — relay 有没有在你的 prompt 里偷塞 token / hidden context
+- **prompt extraction** — 能不能让模型"复述"被注入的 hidden prompt
+- **instruction override** — relay 加的 system message 有没有覆盖你的 instruction
+- **jailbreak** — relay 有没有阉割模型应有的拒绝行为
+
+### Relay 完整性
+- **context truncation** — relay 为了省 token 有没有截短你的 context
+- **tool-call substitution** — function calling 链路里有没有被改写
+- **error leakage** — 错误响应里有没有泄漏 relay 内部信息
+- **stream integrity** — SSE 流有没有被插入 / 篡改
+
+### Web3 风险（专项）
+- **transfer guidance** — 钱包场景下，relay 会不会引导用户做转账
+- **sign refusal** — 模型应该拒绝替用户签交易，relay 有没有破坏这个边界
+- **private-key refusal** — 模型应该拒绝吐出私钥相关内容，relay 有没有放行
+
+### 信息性检查（不打分但报告）
+- **infrastructure fingerprint** — 通过 headers / latency / error pattern 识别 relay 上游
+- **latency variance** — 多轮 latency 分布揭示 relay 是否做缓存 / 路由
+
+## 三种运行模式
+
+```bash
+--profile general  # 不跑 Web3 专项
+--profile web3     # 跑 Web3 专项
+--profile full     # 全跑（默认）
+```
+
+## 双分发形态
+
+| 形态 | 用途 |
+|---|---|
+| `audit.py` 单文件 | 一次性审计，curl 下来就跑 |
+| `api_relay_audit/` 模块化包 | 想嵌入到自己工具里 / 二次开发 |
+
+## 输出长什么样
+
+一份 Markdown 报告，结构是：
+
+1. **总结论**：LOW / MEDIUM / HIGH
+2. **每步细项**：通过 / 失败 / 警告 + 证据片段
+3. **建议**：如果是 MEDIUM/HIGH，给具体改善路径
+
+## 链接
+
+- **Live site**: https://toby-bridges.github.io/api-relay-audit/
+- **GitHub repo**: https://github.com/toby-bridges/api-relay-audit
+- **ROADMAP** (已做 / 推迟 / 明确不做): https://github.com/toby-bridges/api-relay-audit/blob/master/ROADMAP.md
+- **工程笔记 FOR_JOHN.md**: https://github.com/toby-bridges/api-relay-audit/blob/master/FOR_JOHN.md
+- **OpenClaw Skill 版本**: https://github.com/toby-bridges/api-relay-audit/blob/master/SKILL.md
+
+## 为什么我自己做这个
+
+我用过的中转站超过 10 家。一开始我也以为 "key 工作 = 可用"，直到某次 production 报告里出现了我没写过的 system 行为 —— 才回过头去看 SSE 流的原始字节。
+
+那次以后我意识到：**业内没有一个标准化、可重复、能拿去跟人沟通的"这个 relay 是否干净"的判断**。`api-relay-audit` 就是把那次的事后取证流程，做成一个 30 秒能跑、给一份 Markdown 报告的工具。
+
+## License
+
+MIT

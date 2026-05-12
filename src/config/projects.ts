@@ -102,6 +102,25 @@ export type ProjectItemType = {
       techStack: ['Next.js', 'TailwindCSS', 'Shadcn/UI'],
       tags: ['AI', 'Tools Directory']
     },
+    {
+      name: 'Brain Architecture Studio',
+      description:
+        '现代 3D 大脑解剖工作台：49 个真实 BodyParts3D mesh + 4 套成像模式材质 (T1/fMRI/DTI/Histology) + 真切面 + 双视图比较。给开发者 / 神经科学学生 / 教育者用的开源底座。',
+      link: { href: 'https://toby-bridges.github.io/brain-architecture-studio/', label: 'Live Demo' },
+      image: '/projects/brain-architecture-studio.gif',
+      category: ['Web App', '3D'],
+      techStack: ['React 19', 'Vite', 'Three.js', 'TypeScript', '@react-three/fiber'],
+      tags: ['3D', 'Neuroscience', 'WebGL', 'Open Data']
+    },
+    {
+      name: 'API Relay Audit',
+      description:
+        '第三方 AI API 中转 / 反代安全审计工具。13 步本地审计，检测 hidden prompt 注入、prompt 泄漏、指令覆盖、上下文截断、工具调用改写、SSE 流异常，含 Web3 钱包场景。',
+      link: { href: 'https://toby-bridges.github.io/api-relay-audit/', label: 'Live Site' },
+      category: ['CLI', 'Security'],
+      techStack: ['Python', 'Zero-dep'],
+      tags: ['Security', 'AI Safety', 'Prompt Injection', 'Web3']
+    },
   ]
   
   export const githubProjects: Array<ProjectItemType> = [
